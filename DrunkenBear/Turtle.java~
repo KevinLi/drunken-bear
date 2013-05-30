@@ -1,0 +1,24 @@
+import java.awt.*;
+import javax.swing.*;
+public abstract class Turtle(){
+    private Grid _world;
+    private Patch _patch;
+    private int _direction;
+    private Image _sprite;
+    public void act();
+    public void move();
+    public int getDirection(){
+	return _direction;
+    }
+    
+    public void moveTo(Patch newPatch){
+	if (newPatch.getTurtle().equals(null)){
+	    _patch.removeTurtle();
+	    _patch = newPatch;
+	//does this overwrite _patch, or cause the patch at _patch to become a
+	//copy of newPatch?
+	    _patch.setTurtle(this);
+	}
+    } 
+	
+}

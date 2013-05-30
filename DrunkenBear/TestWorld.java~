@@ -1,0 +1,48 @@
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
+import java.awt.image.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.*;
+public class TestWorld extends JFrame {
+    private Graphics g;
+    public TestWorld() {
+	g = new Graphics();
+	initUI();
+    }
+    
+    public final void initUI(){
+	java.net.URL img = getClass().getResource("Jumper.gif");
+	Image icon = new Image(img, "Jumper");
+	g.drawImage(icon, 
+		    0, 0, 
+		    100, 100,
+		    null);
+    
+	JPanel panel = new JPanel();
+	getContentPane().add(panel);
+	panel.setLayout(null);
+	JButton quitButton = new JButton("Quit");
+	quitButton.setBounds(100, 60, 100, 200);
+	quitButton.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent event){
+		    System.exit(0);
+		}
+	    });
+	panel.add(quitButton);
+	setTitle("Quit button");
+	setSize(300,200);
+	setLocationRelativeTo(null);
+	setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+	TestWorld world = new TestWorld();
+    }
+}

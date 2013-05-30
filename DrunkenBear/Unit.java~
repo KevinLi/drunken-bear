@@ -1,0 +1,25 @@
+import java.util.ArrayList;
+public abstract class Unit() extends Turtle{
+    private int _movement;
+    private int _range;
+    private int _health;
+    private int _shield;
+    private int _maxHealth;
+    private ArrayList<Image> _states;
+    public int takeDamage(int damage){
+	_health -= damage;
+	if (_health <= 0){
+	    die;
+	}
+    }
+    public int heal(int healing){
+	_health += healing;
+	if (_health > maxHealth){
+	    _health = maxHealth;
+	}
+    }
+    public void die(){
+	_patch.removeTurtle();
+    }
+}
+    

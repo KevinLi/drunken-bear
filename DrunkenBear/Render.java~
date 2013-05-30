@@ -1,0 +1,68 @@
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class Render extends Canvas implements Runnable, MouseListener,
+        MouseMotionListener, ActionListener {
+
+    public static String title;
+    public static int width;
+    public static int height;
+    public static int scale;
+
+    public int fps_now;
+    public boolean paused;
+    public boolean reset;
+
+    private AtomicBoolean[] _flags;
+    private AtomicInteger _turn;
+    private Grid _grid;
+    private int[] _pixels;
+    private BufferedImage _image;
+    private long _lastTick;
+    private String[] _rules;
+    private JFrame _frame;
+    private JButton pauseButton;
+    private Random random = new Random();
+    private int _drawState;
+
+    public Render(int width, int height, Grid g) {
+    }
+    public Render(){
+	this(256, 256);
+    }
+    public Render(int width, int height){
+	this(width,height,new Grid(width, height));
+    }
+    private void update(){
+	for (int i = 0; i < width; i++){
+	    for (int j = 0; j < height; j++){
+		draw(i, j, color);
+	    }
+	}
+    }
+    public void draw(int x, int y, Color color){
+	_pixels[
+    public void run(){
+	BufferStrategy bs;
+	Graphics g;
+	bs = getBufferStrategy();
+	if (bs == null){
+	    createBufferStrategy(1);
+	    return;
+	}
+	g=bs.getDrawGraphics();
+	g.drawImage(_image, 0, getWidth(), getHeight(), null);
+	g.dispose();
+	bs.show();
+    }
+    public void setGrid(Grid g){
+	_grid = g;
+    }
