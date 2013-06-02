@@ -17,6 +17,7 @@ public abstract class Turtle{
     private Patch _patch;
     private int _direction;
     private BufferedImage _sprite;
+    private Object _item;
     public void act(){};
     public void move(){};
     public Turtle(Grid g, Patch p){

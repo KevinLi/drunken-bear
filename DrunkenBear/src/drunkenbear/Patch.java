@@ -6,11 +6,9 @@ package drunkenbear;
 
 import java.awt.Color;
 import java.util.ArrayList;
-
-/**
- *
- * @author Jeffrey
- */
+import java.awt.image.*;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 public class Patch{
     private int _xcor, _ycor;
@@ -21,6 +19,8 @@ public class Patch{
     private Turtle _turtle;
     private Grid _grid;
     private String _plabel;
+    private BufferedImage _default;
+    private BufferedImage _active;
     public Patch(Grid grid, int xcor, int ycor){
 	_grid = grid;
 	_xcor = xcor;
@@ -28,7 +28,19 @@ public class Patch{
 	_plabel = "X";
 	_vars = new ArrayList();
 	active = false;
+        try{
+	    _default = ImageIO.read(new File("Tile.gif"));
+            _active = ImageIO.read(new File("ActiveTile.gif"));
+	}catch (Exception e){}
+        
     }
+    public BufferedImage getImage(){
+        if (active)
+            return _active;
+        else
+            return _default;
+    }
+        
     public Turtle getTurtle(){
 	return _turtle;
     }

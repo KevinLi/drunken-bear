@@ -23,7 +23,7 @@ public class Render extends Canvas implements ActionListener {
     public int fps_now;
     public boolean paused;
     public boolean reset;
-
+    public boolean cutscene;
     //private AtomicBoolean[] _flags;
     private AtomicBoolean locked;
     private AtomicInteger _turn;
@@ -43,6 +43,7 @@ public class Render extends Canvas implements ActionListener {
 	Render.title = "Drunken Bear";
 	Render.width = width;
 	Render.height = height;
+        cutscene = false;
 	paused = false;
 	reset = false;
 	locked = new AtomicBoolean();
@@ -56,7 +57,14 @@ public class Render extends Canvas implements ActionListener {
 	    _background = ImageIO.read(new File("Background.gif"));
 	    System.out.println("Background successfully loaded.");
 	}
+        
 	catch (IOException e){}
+    }
+    public JPanel getDisplay(){
+        return _display;
+    }
+    public void setCutScene(boolean foo){
+        cutscene = foo;
     }
     public void sleep(){
 	long since = System.currentTimeMillis() - _lastTick;
@@ -75,6 +83,9 @@ public class Render extends Canvas implements ActionListener {
 	spawnTurtle(0,0, "Warrior");
 
         spawnTurtle(0,1,"Mage");
+        CutSceneManager foo = new CutSceneManager(this);
+        foo.startCutSceneOne();
+        _display.repaint();
     }
     //Attempts to create a turtle at the x-y coordinate given
     //returns true if the patch is empty
@@ -139,7 +150,7 @@ public class Render extends Canvas implements ActionListener {
     }
     public void tick(){
 	//asks all turtles to perform their action
-	if (!locked.get()){
+	if (!locked.get()&& !cutscene){
             for (int i = 0; i<images.size(); i++){
                 _display.remove(images.get(i));
             }

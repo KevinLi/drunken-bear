@@ -24,7 +24,7 @@ public class LoadImage extends Component{
     }
     public Dimension getPreferredSize(){
 	if (_img == null){
-	    return new Dimension(512,512);
+	    return new Dimension(768,768);
 	}
 	else {
 	    return new Dimension(_img.getWidth(null), _img.getHeight(null));
