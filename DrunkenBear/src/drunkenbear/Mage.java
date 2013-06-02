@@ -29,6 +29,8 @@ public class Mage extends Unit{
 	catch(IOException e){}
 	
     }
-    
+    public String toString(){
+            return "Mage";
+    }
 
 }

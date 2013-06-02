@@ -31,7 +31,12 @@ public class Warrior extends Unit{
 	    setActive(ImageIO.read(new File("Warrior-Active.gif")));
 	}
 	catch(IOException e){}
+        setImage(getStates().get(0));
 	
+    }
+    @Override
+    public String toString(){
+        return "Warrior";
     }
     
 

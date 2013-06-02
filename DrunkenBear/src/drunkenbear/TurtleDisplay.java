@@ -27,7 +27,7 @@ public class TurtleDisplay extends Component{
 	    return new Dimension(100,100);
 	}
 	else {
-	    return new Dimension(_turtle.getImage().getWidth(null), _turtle.getImage().getHeight(null));
+	    return new Dimension(32,32);
 	}
     }
 }

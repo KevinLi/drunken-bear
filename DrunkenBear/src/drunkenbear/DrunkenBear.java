@@ -15,9 +15,6 @@ public class DrunkenBear{
 	}
     }
     public static void main(String[] args){
-        Warrior war = new Warrior(null, null);
-        Class c = war.getClass();
-        System.out.println(c.toString());
 	DrunkenBear game = new DrunkenBear();
 	game.run();
     }

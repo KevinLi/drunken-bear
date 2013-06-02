@@ -1,10 +1,6 @@
 package drunkenbear;
-
-/**
- *
- * @author Jeffrey
- */
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,6 +36,8 @@ public class Render extends Canvas implements ActionListener {
     private JButton pauseButton;
     private Random random = new Random();
     private int _drawState;
+    private JPanel _display;
+    private ArrayList<Component> images;
 
     public Render(int width, int height, Grid g) {
 	Render.title = "Drunken Bear";
@@ -50,8 +48,9 @@ public class Render extends Canvas implements ActionListener {
 	locked = new AtomicBoolean();
 	locked.set(false);
 	_grid = g;
+        images = new ArrayList();
 	setFrame();
-	scale = 16;
+	scale = 48;
 	_lastTick = 0;
 	try{
 	    _background = ImageIO.read(new File("Background.gif"));
@@ -70,6 +69,12 @@ public class Render extends Canvas implements ActionListener {
 	    }
 	}
 	_lastTick = System.currentTimeMillis();
+    }
+    
+    public void setup(){
+	spawnTurtle(0,0, "Warrior");
+
+        spawnTurtle(0,1,"Mage");
     }
     //Attempts to create a turtle at the x-y coordinate given
     //returns true if the patch is empty
@@ -91,12 +96,9 @@ public class Render extends Canvas implements ActionListener {
 	else
 	    return false;
     }
-    public void setup(){
-	//spawnTurtle(5,5, "Warrior");
-        //spawnTurtle(0,5,"Mage");
-    }
+    
     public Render(){
-	this(512, 512);
+	this(768, 768);
     }
     public Render(int width, int height){
 	this(width,height,new Grid(width/32, height/32));
@@ -126,6 +128,11 @@ public class Render extends Canvas implements ActionListener {
 	_frame.add(this);
 	_frame.add(new LoadImage(_background,0,0));
 	_frame.pack();
+        _display = new JPanel();
+        _display.setSize(width,height);
+        _display.setVisible(true);
+        _frame.setContentPane(_display);
+        //_frame.setLayout(new FlowLayout());
 	_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	_frame.setLocationRelativeTo(null);
 	_frame.setVisible(true);
@@ -133,11 +140,13 @@ public class Render extends Canvas implements ActionListener {
     public void tick(){
 	//asks all turtles to perform their action
 	if (!locked.get()){
-	    System.out.println("Ticking");
+            for (int i = 0; i<images.size(); i++){
+                _display.remove(images.get(i));
+            }
+            System.out.println("Ticking");
 	    locked.set(true);
-	    _frame.repaint();
-	    for (int i = 0; i < width/32; i++){
-		for (int j = 0; j < height/32; j++){
+	    for (int i = 0; i < width/scale; i++){
+		for (int j = 0; j < height/scale; j++){
                     //repaint(.5,i*16,j*16,16,16)
 		    if (_grid.getPatch(i,j).getTurtle()==null){
 		    }
@@ -151,13 +160,18 @@ public class Render extends Canvas implements ActionListener {
 		    
 		}
 	    }
-            System.out.println(_frame.getComponents().length);
+            
+            _display.repaint();
+
 	}
         
 	locked.set(false);
     }
     public void drawTurtle(Turtle turtle){
-	_frame.add(new TurtleDisplay(turtle,scale));
+        //_display.paintComponent(new TurtleDisplay(turtle,scale));
+        //add(turtle.getImage());
+        images.add(_display.add(new DisplayTurtle(turtle)));
+        images.get(images.size()-1).setLocation(turtle.getX()*scale,turtle.getY()*scale);
     }
     private void update(){
 	for (int i = 0; i < width; i++){
