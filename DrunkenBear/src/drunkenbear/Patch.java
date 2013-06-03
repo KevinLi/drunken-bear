@@ -128,6 +128,22 @@ public class Patch{
 	}
 	return neighbors;
     }
+    public ArrayList<Patch> getNeighbors4(){
+        ArrayList<Patch> neighbors = new ArrayList();
+        if (!topEdge()){
+	    neighbors.add(getN());
+	}
+	if (!bottomEdge()){
+	    neighbors.add(getS());
+	}
+	if (!leftEdge()){
+	    neighbors.add(getW());
+	}
+	if (!rightEdge()){
+	    neighbors.add(getE());
+	}
+	return neighbors;
+    }
     public boolean topEdge(){
 	return _ycor==0;
     }

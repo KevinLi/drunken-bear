@@ -46,6 +46,11 @@ public class CutSceneManager implements MouseListener {
 	}catch (Exception e){System.out.println("Boo!");}
         dialogues.add("Ah geez, shut up you critic!");
         cutscene1.add(new CutScene(portraits.get(3),dialogues.get(3)));
+        try{
+            portraits.add(ImageIO.read(new File("CutSceneMage.gif")));
+	}catch (Exception e){System.out.println("Boo!");}
+        dialogues.add("Just to clarify, dear player. There's nothing you can do yet. At all.");
+        cutscene1.add(new CutScene(portraits.get(4),dialogues.get(4)));
     }
     public void startCutSceneOne(){
         _render.setCutScene(true);
@@ -58,8 +63,11 @@ public class CutSceneManager implements MouseListener {
             _render.getDisplay().add(cutscene1.get(pos));
             cutscene1.get(pos).addMouseListener(this);
         }
-        else
+        else{
             _render.setCutScene(false);
+            _render.drawPatches();
+            
+        }
         _render.getDisplay().repaint();
     }
     public void mousePressed(MouseEvent e){

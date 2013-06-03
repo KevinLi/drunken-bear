@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
-public class Mage extends Unit{
+public class Mage extends Turtle{
     public Mage(Grid g, Patch p){
 	super(g, p);
 	setMove(3);

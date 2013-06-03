@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
-public class Warrior extends Unit{
+public class Warrior extends Turtle{
     public Warrior(Grid g, Patch p){
 	super(g, p);
 	setMove(3);

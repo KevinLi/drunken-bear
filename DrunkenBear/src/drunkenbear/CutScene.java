@@ -18,7 +18,7 @@ public class CutScene extends JLabel{
         _sprite = new ImageIcon(sprite); 
     // setMargin(new Insets(0,0,0,0));
     // setBorderPainted(false);
-        setBorder(null);
+        //setBorder(null);
         _dialogue = new JTextArea(dialogue);
         _dialogue.setWrapStyleWord(true);
         _dialogue.setSize(700,200);
