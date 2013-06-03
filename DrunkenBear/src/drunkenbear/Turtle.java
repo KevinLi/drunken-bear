@@ -127,10 +127,10 @@ public abstract class Turtle{
     public ArrayList<Patch> getPatchesInRadius(int r){
         ArrayList <Patch> ans = new ArrayList();
         ArrayList <Patch> temp = new ArrayList();
-        ans.addAll(getPatch().getNeighbors4());
+        ans.addAll(getPatch().getNeighbors4(_friendly));
         while (r > 0){
             for (int i = 0; i<ans.size();i++){
-                temp.addAll(ans.get(i).getNeighbors4());
+                temp.addAll(ans.get(i).getNeighbors4(_friendly));
             }
             HashSet hs = new HashSet();
             hs.addAll(temp);

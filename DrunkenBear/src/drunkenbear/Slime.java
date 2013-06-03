@@ -9,7 +9,7 @@ public class Slime extends Turtle{
     public Slime(Grid g, Patch p){
 	super(g, p);
         setFriendly(false);
-        setMove(2);
+        setMove(1);
 	setRange(1);
 	setHealth(50);
 	setShield(0);

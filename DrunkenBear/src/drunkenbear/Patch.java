@@ -131,19 +131,40 @@ public class Patch{
 	}
 	return neighbors;
     }
-    public ArrayList<Patch> getNeighbors4(){
+    public ArrayList<Patch> getNeighbors4(boolean friendly){
         ArrayList<Patch> neighbors = new ArrayList();
         if (!topEdge()){
-	    neighbors.add(getN());
+            if (getN().getTurtle()==null)
+                neighbors.add(getN());
+            else{
+                if (getN().getTurtle().getFriendly()==friendly)
+                    neighbors.add(getN());
+            }
+            
 	}
 	if (!bottomEdge()){
-	    neighbors.add(getS());
+	    if (getS().getTurtle()==null)
+                neighbors.add(getS());
+            else{
+                if (getS().getTurtle().getFriendly()==friendly)
+                    neighbors.add(getS());
+            }
 	}
 	if (!leftEdge()){
-	    neighbors.add(getW());
+	    if (getW().getTurtle()==null)
+                neighbors.add(getW());
+            else{
+                if (getW().getTurtle().getFriendly()==friendly)
+                    neighbors.add(getW());
+            }
 	}
 	if (!rightEdge()){
-	    neighbors.add(getE());
+	    if (getE().getTurtle()==null)
+                neighbors.add(getE());
+            else{
+                if (getE().getTurtle().getFriendly()==friendly)
+                    neighbors.add(getE());
+            }
 	}
 	return neighbors;
     }

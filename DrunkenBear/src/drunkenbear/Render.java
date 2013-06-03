@@ -120,6 +120,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         spawnTurtle(5,5,"Warrior");
         spawnTurtle(0,15,"Mage");
         spawnTurtle(15,0,"Mage");
+        spawnTurtle(7,9,"Slime");
         CutSceneManager foo = new CutSceneManager(this);
         foo.startCutSceneOne();
         _display.repaint();
