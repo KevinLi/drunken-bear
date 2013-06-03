@@ -10,8 +10,48 @@ public abstract class Turtle{
     private int _direction;
     private BufferedImage _sprite;
     private Object _item;
+    private boolean _friendly;
+    private int _health;
+    private int _xp;
+    private int _level;
+    private boolean exhausted;
+    private BufferedImage _exhaustSprite;
+    public void setExhausted(boolean input){
+        exhausted = input;
+        if (exhausted) _sprite = _exhaustSprite;
+    }
+    public void setExhausted(BufferedImage input){
+        _exhaustSprite = input;
+    }
+    public int getLevel(){
+        return _level;
+    }
+    public int getXP(){
+        return _xp;
+    }
+    //for friendly units, xp is used to level up
+    //for unfriendly units, xp is how much xp it gives to the killer
+    public void setXP(int exp){
+        _xp = exp;
+    }
+    public void gainXP(int exp){
+        _xp += exp;
+        while (_xp > 100){
+            _level++; //ding!
+            _xp-=100;
+            _health+=20;
+            _damage++;
+            _shield++;
+        }
+    }
+    public boolean getFriendly(){
+        return _friendly;
+    }
+    public void setFriendly(boolean input){
+        _friendly = input;
+    }
     public void act(){
-	if (!active){
+	if (!active && !exhausted){
 	    setImage(_states.get(_state));
 	    _state++;
 	    if (_state >= _states.size()){
@@ -36,7 +76,8 @@ public abstract class Turtle{
         _states = new ArrayList();
 	_state = 0;
 	active = false;
-	
+	_level = 1;
+        _xp = 0;
     }
     public BufferedImage getImage(){
         if (!active){
@@ -114,24 +155,35 @@ public abstract class Turtle{
 	_range = n;
     }
     //current health
-    private int _health;
     public void setHealth(int n){
 	_health = n;
+    }
+    public int getHealth(){
+        return _health;
     }
     //damage-taken modifier
     private int _shield;
     public void setShield(int n){
 	_shield = n;
     }
+    public int getShield(){
+        return _shield;
+    }
     //base health
     private int _maxHealth;
     public void setMaxHealth(int n){
 	_maxHealth = n;
     }
+    public int getMaxHealth(){
+        return _maxHealth;
+    }
     //damage unit deals on attacks
     private int _damage;
     public void setDamage(int n){
 	_damage = n;
+    }
+    public int getDamage(){
+        return _damage;
     }
     //will cycle through to serve as idle animation
     private ArrayList<BufferedImage> _states;

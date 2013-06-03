@@ -57,8 +57,11 @@ public class Patch{
     public void setPColor(Color color){
 	_pcolor = color;
     }
-    public void setActive(){
-	active = true;
+    public void setActive(boolean input){
+	active = input;
+    }
+    public boolean getActive(){
+        return active;
     }
     public void deactivate(){
 	active = false;

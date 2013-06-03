@@ -12,11 +12,12 @@ import java.io.*;
 public class Warrior extends Turtle{
     public Warrior(Grid g, Patch p){
 	super(g, p);
+        setFriendly(true);
 	setMove(3);
 	setRange(1);
 	setHealth(100);
 	setShield(5);
-	setDamage(15);
+	setDamage(20);
 	setMaxHealth(110);
 	try{
 	    getStates().add(ImageIO.read(new File("Warrior.gif")));
@@ -29,6 +30,10 @@ public class Warrior extends Turtle{
 	catch(IOException e){}
 	try{
 	    setActive(ImageIO.read(new File("Warrior-Active.gif")));
+	}
+	catch(IOException e){}
+        try{
+	    setActive(ImageIO.read(new File("Warrior-Exhausted.gif")));
 	}
 	catch(IOException e){}
         setImage(getStates().get(0));

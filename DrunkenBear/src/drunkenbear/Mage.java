@@ -8,9 +8,10 @@ import java.io.*;
 public class Mage extends Turtle{
     public Mage(Grid g, Patch p){
 	super(g, p);
-	setMove(3);
+        setFriendly(true);
+        setMove(3);
 	setRange(2);
-	setHealth(75);
+	setHealth(60);
 	setShield(0);
 	setDamage(35);
 	setMaxHealth(85);
@@ -27,7 +28,11 @@ public class Mage extends Turtle{
 	    setActive(ImageIO.read(new File("Mage-Active.gif")));
 	}
 	catch(IOException e){}
-	
+	try{
+	    setActive(ImageIO.read(new File("Mage-Exhausted.gif")));
+	}
+	catch(IOException e){}
+        
     }
     public String toString(){
             return "Mage";

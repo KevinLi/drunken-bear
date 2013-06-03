@@ -45,6 +45,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private ArrayList<Patch> activePatches;
     private Turtle activeTurtle;
     private Turtle mouseoverTurtle;
+    
+    private int day;
+    
     public Render(int width, int height, Grid g) {
 	Render.title = "Drunken Bear";
 	Render.width = width;
@@ -265,9 +268,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void mouseEntered(MouseEvent e) {
         if (e.getComponent() instanceof DisplayTurtle){
             mouseoverTurtle = _grid.getPatch(e.getComponent().getX()/scale,e.getComponent().getY()).getTurtle();
-            
         }
-    
     }
 
     public void mouseExited(MouseEvent e) {
