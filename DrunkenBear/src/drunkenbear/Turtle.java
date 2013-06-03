@@ -1,13 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package drunkenbear;
-
-/**
- *
- * @author Jeffrey
- */
 import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -32,7 +23,12 @@ public abstract class Turtle{
         active = true;
         return getPatchesInRadius(getMove());
     }
-
+    public void activate(boolean input){
+        active = input;
+    }
+    public boolean getActive(){
+        return active;
+    }
     public Turtle(Grid g, Patch p){
 	_world = g;
 	_patch = p;
@@ -43,7 +39,9 @@ public abstract class Turtle{
 	
     }
     public BufferedImage getImage(){
-	return _sprite;
+        if (!active){
+            return _sprite;
+        }else return _active;
     }
     public void setImage(BufferedImage img){
 	_sprite = img;
@@ -70,7 +68,7 @@ public abstract class Turtle{
 	_patch.removeTurtle();
     }
     public void moveTo(Patch newPatch){
-	if (newPatch.getTurtle().equals(null)){
+	if (newPatch.getTurtle() == null){
 	    _patch.removeTurtle();
 	    _patch = newPatch;
 	//does this overwrite _patch, or cause the patch at _patch to become a

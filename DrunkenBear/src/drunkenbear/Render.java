@@ -43,7 +43,8 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private ArrayList<Component> images;
     private Component[][] patches;
     private ArrayList<Patch> activePatches;
-
+    private Turtle activeTurtle;
+    private Turtle mouseoverTurtle;
     public Render(int width, int height, Grid g) {
 	Render.title = "Drunken Bear";
 	Render.width = width;
@@ -109,10 +110,11 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	}
 	_lastTick = System.currentTimeMillis();
     }
-    
     public void setup(){
 	spawnTurtle(0,0, "Warrior");
         spawnTurtle(0,1,"Mage");
+        spawnTurtle(0,2,"Warrior");
+        spawnTurtle(5,5,"Warrior");
         spawnTurtle(0,15,"Mage");
         spawnTurtle(15,0,"Mage");
         CutSceneManager foo = new CutSceneManager(this);
@@ -135,12 +137,13 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         for (int i = 0; i < width/scale; i++){
             for (int j = 0; j< width/scale;j++){
                     patches[i][j].setLocation(i*scale,j*scale);
+                    if (_grid.getPatch(i,j).getActive()){
+                        patches[i][j].addMouseListener(this);
+                    }
             }
         }
         //_patchDisplay.repaint();
     }
-    //Attempts to create a turtle at the x-y coordinate given
-    //returns true if the patch is empty
     public boolean spawnTurtle(int x, int y, String c){
         Class turtleClass = null;
         Turtle newTurtle = null;
@@ -158,7 +161,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	else
 	    return false;
     }
-    
     public Render(){
 	this(768, 768);
     }
@@ -261,19 +263,40 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     }
 
     public void mouseEntered(MouseEvent e) {
+        if (e.getComponent() instanceof DisplayTurtle){
+            mouseoverTurtle = _grid.getPatch(e.getComponent().getX()/scale,e.getComponent().getY()).getTurtle();
+            
+        }
+    
     }
 
     public void mouseExited(MouseEvent e) {
     }
 
     public void mouseClicked(MouseEvent e) {
-       if (e.getComponent() instanceof DisplayTurtle){
-           activePatches = _grid.getPatch(e.getComponent().getX(), e.getComponent().getY()).getTurtle().getPatchesInRadius(_grid.getPatch(e.getX(), e.getY()).getTurtle().getMove());
-           System.out.println(activePatches.size());
+       if (e.getComponent() instanceof DisplayTurtle && !makingAction){
+           makingAction = true;
+           activeTurtle = _grid.getPatch(e.getComponent().getX()/scale, e.getComponent().getY()/scale).getTurtle();
+           activePatches = activeTurtle.getPatchesInRadius(activeTurtle.getMove());
+           activeTurtle.activate(true);
            for (int i = 0; i < activePatches.size();i++){
-               activePatches.get(i).setActive();
+               activePatches.get(i).setActive(true);
            }
            drawPatches();
        }
+       if (e.getComponent() instanceof DisplayImage && makingAction){
+           Patch foo = _grid.getPatch(e.getComponent().getX()/scale,e.getComponent().getY()/scale);
+           System.out.println(foo.getX()+ ", " + foo.getY());
+           activeTurtle.moveTo(foo);
+           activeTurtle.activate(false);
+           for (int i = 0; i<activePatches.size();i++){
+               activePatches.get(i).setActive(false);
+           }
+           activePatches.clear();
+           makingAction = false;
+           tick();
+           drawPatches();
+       }
+       
     }
 }
