@@ -49,7 +49,7 @@ public class CutSceneManager implements MouseListener {
         try{
             portraits.add(ImageIO.read(new File("CutSceneMage.gif")));
 	}catch (Exception e){System.out.println("Boo!");}
-        dialogues.add("Just to clarify, dear player. There's nothing you can do yet. At all.");
+        dialogues.add("Just to clarify, dear player. \n There's nothing you can do yet. At all.");
         cutscene1.add(new CutScene(portraits.get(4),dialogues.get(4)));
     }
     public void startCutSceneOne(){

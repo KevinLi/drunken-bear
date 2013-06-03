@@ -16,7 +16,7 @@ public class TurtleLabel extends JLabel{
         _info.setWrapStyleWord(true);
         _info.setSize(700,200);
         _info.setLineWrap(true);
-        _info.setFont(new Font("Arial",0,28));
+        _info.setFont(new Font("Arial",0,14));
         _info.setLocation(34,580);
         _info.setOpaque(false);
         _info.setEditable(false);
