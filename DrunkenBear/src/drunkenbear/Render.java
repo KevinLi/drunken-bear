@@ -1,4 +1,7 @@
 package drunkenbear;
+
+import drunkenbear.*;
+
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -38,6 +41,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private String[] _rules;
     private JFrame _frame;
     private JButton pauseButton;
+    private JButton endTurn;
     private Random random = new Random();
     private int _drawState;
     private JPanel _display;
@@ -75,7 +79,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	try{
 	    _background = ImageIO.read(new File("Background.gif"));
 	}
-        
 	catch (IOException e){}
     }
     public void setMessages(){
@@ -90,6 +93,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void setCutScene(boolean foo){
         cutscene = foo;
     }
+    //sleep: 1000ms
+    //nap: 50ms
+    //powernap: 5ms
     public void sleep(){
 	long since = System.currentTimeMillis() - _lastTick;
 	if (since < 1000){
@@ -199,7 +205,14 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	menuBar.add(resetButton);
 	resetButton.addActionListener(this);
 	
-	menuBar.setPreferredSize(new Dimension(width*scale, 40));
+        endTurn = new JButton("End Turn");
+        endTurn.setActionCommand("endturn");
+        endTurn.setFont(new Font("Arial", 0, 12));
+	endTurn.setPreferredSize(new Dimension(90, 0));
+	menuBar.add(endTurn);
+	endTurn.addActionListener(this);
+        
+        menuBar.setPreferredSize(new Dimension(width*scale, 40));
 	setPreferredSize(new Dimension(width * scale, height*scale));
 	_frame = new JFrame();
 	_frame.setJMenuBar(menuBar);
@@ -265,6 +278,17 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                 paused = true;
                 pauseButton.setText("Unpause");
             }
+        }
+        if ("endturn".equals(e.getActionCommand())){
+            for (int i = 0; i < width/scale; i++){
+		for (int j = 0; j < height/scale; j++){
+		    if (_grid.getPatch(i,j).getTurtle()==null){
+		    }
+		    else{
+			_grid.getPatch(i,j).getTurtle().setExhausted(false);
+		    }
+		}
+	    }
         }
     };
     public void run(){};

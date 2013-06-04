@@ -86,7 +86,7 @@ public abstract class Turtle{
         _friendly = input;
     }
     public void act(){
-	if (!active){
+	if (!active && !exhausted){
 	    setImage(_states.get(_state));
 	    _state++;
 	    if (_state >= _states.size()){
@@ -114,14 +114,14 @@ public abstract class Turtle{
 	_level = 1;
         _xp = 0;
         moved = false;
+        attacking = false;
+        defending = false;
     }
     public BufferedImage getImage(){
         if (!active){
             if (attacking) System.out.println();
             return _sprite;
         } 
-        else if (attacking) return _attacking;
-        else if (defending) return _defending;
         else return _active;
     }
     public void setImage(BufferedImage img){
