@@ -201,6 +201,26 @@ public abstract class Turtle{
         }
         return ans;
     }
+    public ArrayList<Patch> getTargetsInRange(int r){
+        ArrayList <Patch> ans = new ArrayList();
+        ArrayList <Patch> temp = new ArrayList();
+        ans.addAll(getPatch().getNeighbors4());
+        while (r > 0){
+            for (int i = 0; i<ans.size();i++){
+                if (ans.get(i).getTurtle()==null||(ans.get(i).getTurtle().getFriendly()==_friendly))
+                    temp.addAll(ans.get(i).getNeighbors4());
+            }
+            HashSet hs = new HashSet();
+            hs.addAll(temp);
+            hs.addAll(ans);
+            ans.clear();
+            temp.clear();
+            ans.addAll(hs);
+            r--;
+            System.out.println(r);
+        }
+        return ans;
+    }
     //movement range
     private int _movement;
     public void setMove(int n){

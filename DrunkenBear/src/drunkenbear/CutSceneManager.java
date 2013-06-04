@@ -19,6 +19,8 @@ public class CutSceneManager implements MouseListener {
     private ArrayList<BufferedImage> portraits;
     private ArrayList<String> dialogues;
     private ArrayList<CutScene> cutscene1;
+    private ArrayList<CutScene> cutscene2;
+    private ArrayList<CutScene> currentCutscene;
     private Render _render;
     private int pos;
     public CutSceneManager(Render render){
@@ -26,6 +28,7 @@ public class CutSceneManager implements MouseListener {
         portraits = new ArrayList();
         dialogues = new ArrayList();
         cutscene1 = new ArrayList();
+        cutscene2 = new ArrayList();
         try{
             portraits.add(ImageIO.read(new File("CutSceneWarrior.gif")));
 	}catch (Exception e){System.out.println("Boo!");}
@@ -51,27 +54,45 @@ public class CutSceneManager implements MouseListener {
 	}catch (Exception e){System.out.println("Boo!");}
         dialogues.add("Just to clarify, dear player. \n There's nothing you can do yet. At all.");
         cutscene1.add(new CutScene(portraits.get(4),dialogues.get(4)));
+        try{
+            portraits.add(ImageIO.read(new File("CutSceneWarrior-Surprised.gif")));
+	}catch (Exception e){System.out.println("Boo!");}
+        dialogues.add("Ack! I thought you said nothing would happen!");
+        cutscene2.add(new CutScene(portraits.get(5),dialogues.get(5)));
+        try{
+            portraits.add(ImageIO.read(new File("CutSceneMageHappy.gif")));
+	}catch (Exception e){System.out.println("Boo!");}
+        dialogues.add("Ah, did I? My bad.");
+        cutscene2.add(new CutScene(portraits.get(5),dialogues.get(5)));
     }
     public void startCutSceneOne(){
         _render.setCutScene(true);
         _render.getDisplay().add(cutscene1.get(0));
         cutscene1.get(0).addMouseListener(this);
+        currentCutscene = cutscene1;
+        pos = 0;
+    }
+    public void startCutSceneTwo(){
+        _render.setCutScene(true);
+        _render.getDisplay().add(cutscene2.get(0));
+        cutscene2.get(0).addMouseListener(this);
+        currentCutscene = cutscene2;
         pos = 0;
     }
     public void nextScene(){
         if (pos < cutscene1.size()){
-            _render.getDisplay().add(cutscene1.get(pos));
+            _render.getDisplay().add(currentCutscene.get(pos));
             cutscene1.get(pos).addMouseListener(this);
         }
         else{
             _render.setCutScene(false);
             _render.drawPatches();
-            
+            pos = 0;
         }
         _render.getDisplay().repaint();
     }
     public void mousePressed(MouseEvent e){
-        _render.getDisplay().remove(cutscene1.get(pos));
+        _render.getDisplay().remove(currentCutscene.get(pos));
         pos++;
         nextScene();
     }
@@ -86,7 +107,7 @@ public class CutSceneManager implements MouseListener {
     }
 
     public void mouseClicked(MouseEvent e) {
-        _render.getDisplay().remove(cutscene1.get(pos));
+        _render.getDisplay().remove(currentCutscene.get(pos));
         pos++;
         nextScene();
     }

@@ -53,8 +53,11 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private Turtle activeTurtle;
     private Turtle mouseoverTurtle;
     private ArrayList<String> messages;
-    
+    private ArrayList<Turtle> enemies;
+    private ArrayList<Patch> enemySpawnPoints;
     private int day;
+    private CutSceneManager cutscenes;
+
     
     public Render(int width, int height, Grid g) {
 	Render.title = "Drunken Bear";
@@ -70,10 +73,20 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	_grid = g;
         images = new ArrayList();
         activePatches = new ArrayList();
+        cutscenes = new CutSceneManager(this);
 	setFrame();
 	scale = 48;
 	_lastTick = 0;
+        enemies = new ArrayList();
         messages = new ArrayList();
+        enemySpawnPoints = new ArrayList();
+        for (int i =0; i<width/scale; i++){
+            enemySpawnPoints.add(_grid.getPatch(0,i));
+            enemySpawnPoints.add(_grid.getPatch(i,0));
+            enemySpawnPoints.add(_grid.getPatch(width/scale - 1,i));
+            enemySpawnPoints.add(_grid.getPatch(i,width/scale-1));
+        }
+        day = 1;
         setMessages();
         patches = new Component[width/scale][height/scale];
 	try{
@@ -85,7 +98,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         messages.add("Lead me to victory");
         messages.add("What shall I do next?");
         messages.add("Now what?");
-        messages.add("What would you like me to do?");
+        messages.add("Let's go!");
+        messages.add("Let's do this!");
+
     }
     public JPanel getDisplay(){
         return _display;
@@ -133,15 +148,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	_lastTick = System.currentTimeMillis();
     }
     public void setup(){
-	spawnTurtle(0,0, "Warrior");
-        spawnTurtle(0,1,"Mage");
-        spawnTurtle(0,2,"Warrior");
-        spawnTurtle(5,5,"Warrior");
-        spawnTurtle(0,15,"Mage");
-        spawnTurtle(15,0,"Mage");
-        spawnTurtle(7,8,"Slime");
-        CutSceneManager foo = new CutSceneManager(this);
-        foo.startCutSceneOne();
+	spawnTurtle(7,7, "Warrior");
+        spawnTurtle(8,8,"Mage");
+        cutscenes.startCutSceneOne();
         _display.repaint();
         drawPatches();
     }
@@ -239,6 +248,41 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	_frame.pack();
         _frame.setVisible(true);
     }
+    public void startEnemyPhase(){
+        if (day%3==0){
+            spawnEnemies((int) (1 + day/3));
+        }
+        if (day == 3){
+            cutscenes.startCutSceneTwo();
+            
+        }
+        for (int i = 0; i<enemies.size();i++){
+            Turtle currentEnemy = enemies.get(i);
+            activePatches = currentEnemy.getPatchesInRange(currentEnemy.getMove());
+            ArrayList<Patch> temp;
+            currentEnemy.activate(true);
+            //sleep();
+            for (int j = 0; j < activePatches.size();j++){
+                if (activePatches.get(j).getTurtle()!=null){
+                }
+            }
+            drawPatches();
+            currentEnemy.activate(false);
+        }
+    }
+    
+    public void spawnEnemies(int n){
+        Patch spawnPoint;
+        int failsafe = 42;
+        while (n > 0 && failsafe > 0){
+            spawnPoint= enemySpawnPoints.get((int) (Math.random()*enemySpawnPoints.size()));
+            if (spawnTurtle(spawnPoint.getX(),spawnPoint.getY(),"Slime")){
+                enemies.add(spawnPoint.getTurtle());
+                n--;
+            }
+            failsafe--;
+        }
+    }
     public void tick(){
 	//asks all turtles to perform their action
 	if (!locked.get()&& !cutscene){
@@ -270,6 +314,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         images.get(images.size()-1).addMouseListener(this);
     }
     public void actionPerformed(ActionEvent e){
+        startEnemyPhase();
         if ("paused".equals(e.getActionCommand())){
             if (paused){
                 paused = false;
@@ -290,6 +335,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 		}
 	    }
         }
+        day++;
     };
     public void run(){};
     public void setGrid(Grid g){

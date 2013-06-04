@@ -10,7 +10,7 @@ public class Slime extends Turtle{
 	super(g, p);
         setFriendly(false);
         setMove(1);
-	setRange(1);
+	setRange(0);
 	setHealth(50);
 	setShield(0);
 	setDamage(15);

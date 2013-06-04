@@ -1,7 +1,6 @@
 package drunkenbear;
 public class DrunkenBear{
     private Render _render;
-    
     public DrunkenBear(){
 	_render = new Render();
     }
