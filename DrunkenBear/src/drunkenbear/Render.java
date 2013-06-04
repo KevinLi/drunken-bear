@@ -150,6 +150,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void setup(){
 	spawnTurtle(7,7, "Warrior");
         spawnTurtle(8,8,"Mage");
+        spawnTurtle(7,8,"Slime");
         cutscenes.startCutSceneOne();
         _display.repaint();
         drawPatches();
@@ -251,20 +252,74 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void startEnemyPhase(){
         if (day%3==0){
             spawnEnemies((int) (1 + day/3));
+            Object[] options = {"Okay"};
+                    int n = JOptionPane.showOptionDialog(_frame,
+                    "Slimes have appeared!",
+                    "Enemy Reporter",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
         }
         if (day == 3){
-            cutscenes.startCutSceneTwo();
+            enemies.get(0).activate(true);
+            enemies.get(1).activate(false);
+            Object[] options = {"Panick!"};
+                    int n = JOptionPane.showOptionDialog(_frame,
+                    "Slimes are looking at Warrior hungrily!",
+                    "Enemy Reporter",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
             
+            cutscenes.startCutSceneTwo();
+            enemies.get(0).activate(true);
+            enemies.get(1).activate(false);
         }
         for (int i = 0; i<enemies.size();i++){
             Turtle currentEnemy = enemies.get(i);
             activePatches = currentEnemy.getPatchesInRange(currentEnemy.getMove());
-            ArrayList<Patch> temp;
+            ArrayList<Turtle> targets = new ArrayList();
             currentEnemy.activate(true);
-            //sleep();
+            boolean foo = false;
             for (int j = 0; j < activePatches.size();j++){
                 if (activePatches.get(j).getTurtle()!=null){
+                    targets = activePatches.get(j).getTurtles4(true);
+                    if (targets.size()>0){
+                        currentEnemy.moveTo(activePatches.get(j));
+                        activeTurtle.setAttacking(true);
+                        //targets.get(0).setDefending(true);
+                        tick();
+                        Object[] options = {"Okay!"};
+                            int n = JOptionPane.showOptionDialog(_frame,
+                            ""+currentEnemy.getClass().toString()+" deals "+(currentEnemy.getDamage()-targets.get(0).getShield())+" damage to "+targets.get(0).getClass().toString(),
+                            "Combat Reporter",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                        targets.get(0).takeDamage(activeTurtle.getDamage());
+                       activeTurtle.setExhausted(true);
+                       activeTurtle.setAttacking(false);
+                       foo = true;
+                       //targets.get(0).setDefending(false);
+                    }
+                    
                 }
+            }
+            if (!foo){
+                Patch closest = currentEnemy.getPatch();
+                double recordHolder=100;
+                for (int j = 0; j < activePatches.size();j++){
+                    if (activePatches.get(j).distance(_grid.getPatch(7,7))<recordHolder)
+                        closest = activePatches.get(j);
+                        recordHolder = activePatches.get(j).distance(_grid.getPatch(7,7));
+                }
+                currentEnemy.moveTo(closest);
             }
             drawPatches();
             currentEnemy.activate(false);
@@ -378,8 +433,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                     options,
                     options[2]);
                }else{
-                                       System.out.println(n);
-
                    Object[] options = {"Attack",
                     "Wait"};
                     n = JOptionPane.showOptionDialog(_frame,
@@ -441,19 +494,22 @@ public class Render extends Canvas implements ActionListener, MouseListener {
            if (target == null || (target.getFriendly() == activeTurtle.getFriendly())){
            }
            else{
-               /*
                activeTurtle.setAttacking(true);
                target.setDefending(true);
                tick();
-               tick();
-               sleep();
-               * */
+               Object[] options = {"Okay!"};
+                    int n = JOptionPane.showOptionDialog(_frame,
+                    ""+activeTurtle.getClass().toString()+" deals "+(activeTurtle.getDamage()-target.getShield())+" damage to "+target.getClass().toString(),
+                    "Combat Reporter",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
                target.takeDamage(activeTurtle.getDamage());
                activeTurtle.setExhausted(true);
-               /*
-               //activeTurtle.setAttacking(false);
+               activeTurtle.setAttacking(false);
                target.setDefending(false);
-               */
            }
            activeTurtle.activate(false);
            for (int i = 0; i<activePatches.size();i++){
@@ -469,17 +525,22 @@ public class Render extends Canvas implements ActionListener, MouseListener {
            if (target == null || target.getFriendly() == activeTurtle.getFriendly()){
            }
            else{
-               /*
                activeTurtle.setAttacking(true);
                target.setDefending(true);
                tick();
-               sleep();
-               */
+               Object[] options = {"Okay!"};
+                    int n = JOptionPane.showOptionDialog(_frame,
+                    ""+activeTurtle.getClass().toString()+" deals "+(activeTurtle.getDamage()-target.getShield())+" damage to "+target.getClass().toString(),
+                    "Combat Reporter",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
                target.takeDamage(activeTurtle.getDamage());
                activeTurtle.setExhausted(true);
-               /*activeTurtle.setAttacking(false);
+               activeTurtle.setAttacking(false);
                target.setDefending(false);
-               */
            }
            activeTurtle.activate(false);
            for (int i = 0; i<activePatches.size();i++){

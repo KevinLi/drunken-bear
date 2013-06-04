@@ -30,7 +30,7 @@ public class CutScene extends JLabel{
         _dialogue.setFocusable(false);
         setIcon(_sprite);
         setSize(_sprite.getImage().getWidth(null), _sprite.getImage().getHeight(null));
-
+        setOpaque(true);
         add(_dialogue);
   }
 }

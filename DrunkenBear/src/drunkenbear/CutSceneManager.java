@@ -62,8 +62,8 @@ public class CutSceneManager implements MouseListener {
         try{
             portraits.add(ImageIO.read(new File("CutSceneMageHappy.gif")));
 	}catch (Exception e){System.out.println("Boo!");}
-        dialogues.add("Ah, did I? My bad.");
-        cutscene2.add(new CutScene(portraits.get(5),dialogues.get(5)));
+        dialogues.add("Ah, did I? Well, my bad.");
+        cutscene2.add(new CutScene(portraits.get(6),dialogues.get(6)));
     }
     public void startCutSceneOne(){
         _render.setCutScene(true);
@@ -80,9 +80,9 @@ public class CutSceneManager implements MouseListener {
         pos = 0;
     }
     public void nextScene(){
-        if (pos < cutscene1.size()){
+        if (pos < currentCutscene.size()){
             _render.getDisplay().add(currentCutscene.get(pos));
-            cutscene1.get(pos).addMouseListener(this);
+            currentCutscene.get(pos).addMouseListener(this);
         }
         else{
             _render.setCutScene(false);

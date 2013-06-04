@@ -194,6 +194,35 @@ public class Patch{
 	}
 	return neighbors;
     }
+    public ArrayList<Turtle> getTurtles4(boolean friendly){
+        ArrayList<Turtle> neighbors = new ArrayList();
+        if (!topEdge()){
+            if (getN().getTurtle()!=null)
+            if (getN().getTurtle().getFriendly()==friendly){
+                    neighbors.add(getN().getTurtle());
+            }
+            
+	}
+	if (!bottomEdge()){
+            if (getS().getTurtle()!=null)
+            if (getS().getTurtle().getFriendly()==friendly){
+                    neighbors.add(getS().getTurtle());
+            }
+	}
+	if (!leftEdge()){
+            if (getW().getTurtle()!=null)
+            if (getW().getTurtle().getFriendly()==friendly){
+                    neighbors.add(getW().getTurtle());
+            }
+	}
+	if (!rightEdge()){
+            if (getE().getTurtle()!=null)
+            if (getE().getTurtle().getFriendly()==friendly){
+                    neighbors.add(getE().getTurtle());
+            }
+	}
+        return neighbors;
+    }
     public boolean topEdge(){
 	return _ycor==0;
     }
@@ -221,6 +250,10 @@ public class Patch{
         }
         else
             return "O";
+    }
+    public double distance(Patch target){
+	return Math.sqrt(Math.pow(getX() - target.getX(),2) + 
+			 Math.pow(getY() - target.getY(),2));
     }
 }
     

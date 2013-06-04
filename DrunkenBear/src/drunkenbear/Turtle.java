@@ -119,10 +119,13 @@ public abstract class Turtle{
     }
     public BufferedImage getImage(){
         if (!active){
-            if (attacking) System.out.println();
+            if (defending) return _defending;
             return _sprite;
         } 
-        else return _active;
+        else{
+            if (attacking) return _attacking;
+            return _active;
+        }
     }
     public void setImage(BufferedImage img){
 	_sprite = img;
