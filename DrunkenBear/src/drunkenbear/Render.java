@@ -1,5 +1,7 @@
 package drunkenbear;
 
+import drunkenbear.*;
+
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,6 +15,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
 import javax.imageio.ImageIO;
+
 
 public class Render extends Canvas implements ActionListener, MouseListener {
 
@@ -82,35 +85,14 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 		cutscene = foo;
 	}
 
-	public void sleep() {
+    //sleep: 1000ms
+    //nap: 50ms
+    //powernap: 5ms
+	public void sleep(int ms) {
 		long since = System.currentTimeMillis() - _lastTick;
-		if (since < 1000) {
+		if (since < ms) {
 			try {
-				Thread.sleep(1000 - since);
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
-		_lastTick = System.currentTimeMillis();
-	}
-
-	public void nap() {
-		long since = System.currentTimeMillis() - _lastTick;
-		if (since < 50) {
-			try {
-				Thread.sleep(50 - since);
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
-		_lastTick = System.currentTimeMillis();
-	}
-
-	public void powernap() {
-		long since = System.currentTimeMillis() - _lastTick;
-		if (since < 5) {
-			try {
-				Thread.sleep(5 - since);
+				Thread.sleep(ms - since);
 			} catch (InterruptedException e) {
 				return;
 			}
@@ -287,7 +269,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		if (e.getComponent() instanceof DisplayTurtle) {
+		if (e.getComponent() instanceof TurtleDisplay) {
 			mouseoverTurtle = _grid.getPatch(e.getComponent().getX() / scale,
 					e.getComponent().getY()).getTurtle();
 		}

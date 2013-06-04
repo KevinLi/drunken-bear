@@ -11,7 +11,7 @@ public class DrunkenBear{
 	    if (!_render.paused){
 		_render.tick();
 	    }
-	    _render.sleep();
+	    _render.sleep(1000);
 	}
     }
     public static void main(String[] args){
