@@ -42,6 +42,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private JFrame _frame;
     private JButton pauseButton;
     private JButton endTurn;
+    private JLabel dayTracker;
+    private JLabel resourceTracker;
+    private JComboBox spawnAlly;
     private Random random = new Random();
     private int _drawState;
     private JPanel _display;
@@ -56,6 +59,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     private ArrayList<Turtle> enemies;
     private ArrayList<Patch> enemySpawnPoints;
     private int day;
+    private int resources;
     private CutSceneManager cutscenes;
 
     
@@ -74,6 +78,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         images = new ArrayList();
         activePatches = new ArrayList();
         cutscenes = new CutSceneManager(this);
+        dayTracker = new JLabel();
+        resourceTracker = new JLabel();
+        spawnAlly = new JComboBox();
 	setFrame();
 	scale = 48;
 	_lastTick = 0;
@@ -279,18 +286,23 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             enemies.get(0).activate(true);
             enemies.get(1).activate(false);
         }
+        enemyAction();
+        tick();
+    }
+    public void enemyAction(){
         for (int i = 0; i<enemies.size();i++){
             Turtle currentEnemy = enemies.get(i);
             activePatches = currentEnemy.getPatchesInRange(currentEnemy.getMove());
-            ArrayList<Turtle> targets = new ArrayList();
+            ArrayList<Turtle> targets;
             currentEnemy.activate(true);
             boolean foo = false;
             for (int j = 0; j < activePatches.size();j++){
-                if (activePatches.get(j).getTurtle()!=null){
+                if (activePatches.get(j).getTurtle()==null){
+                    System.out.println("foo");
                     targets = activePatches.get(j).getTurtles4(true);
                     if (targets.size()>0){
                         currentEnemy.moveTo(activePatches.get(j));
-                        activeTurtle.setAttacking(true);
+                        currentEnemy.setAttacking(true);
                         //targets.get(0).setDefending(true);
                         tick();
                         Object[] options = {"Okay!"};
@@ -302,10 +314,11 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                             null,
                             options,
                             options[0]);
-                        targets.get(0).takeDamage(activeTurtle.getDamage());
-                       activeTurtle.setExhausted(true);
-                       activeTurtle.setAttacking(false);
+                        targets.get(0).takeDamage(currentEnemy.getDamage());
+                       //currentEnemy.setExhausted(true);
+                       currentEnemy.setAttacking(false);
                        foo = true;
+                       break;
                        //targets.get(0).setDefending(false);
                     }
                     
@@ -315,9 +328,10 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                 Patch closest = currentEnemy.getPatch();
                 double recordHolder=100;
                 for (int j = 0; j < activePatches.size();j++){
-                    if (activePatches.get(j).distance(_grid.getPatch(7,7))<recordHolder)
+                    if (activePatches.get(j).distance(_grid.getPatch(7,7))<recordHolder && activePatches.get(j).getTurtle()==null){
                         closest = activePatches.get(j);
                         recordHolder = activePatches.get(j).distance(_grid.getPatch(7,7));
+                    }
                 }
                 currentEnemy.moveTo(closest);
             }
@@ -325,7 +339,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             currentEnemy.activate(false);
         }
     }
-    
     public void spawnEnemies(int n){
         Patch spawnPoint;
         int failsafe = 42;

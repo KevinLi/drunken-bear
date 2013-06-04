@@ -201,7 +201,6 @@ public class Patch{
             if (getN().getTurtle().getFriendly()==friendly){
                     neighbors.add(getN().getTurtle());
             }
-            
 	}
 	if (!bottomEdge()){
             if (getS().getTurtle()!=null)
@@ -235,7 +234,6 @@ public class Patch{
     public boolean rightEdge(){
 	return _xcor==(_grid.getWidth()-1);
     }
-		
     public String getLabel(){
 	return _plabel;
     }
