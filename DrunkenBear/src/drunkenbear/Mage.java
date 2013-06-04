@@ -9,8 +9,8 @@ public class Mage extends Turtle{
     public Mage(Grid g, Patch p){
 	super(g, p);
         setFriendly(true);
-        setMove(3);
-	setRange(2);
+        setMove(2);
+	setRange(1);
 	setHealth(60);
 	setShield(0);
 	setDamage(35);
@@ -29,7 +29,15 @@ public class Mage extends Turtle{
 	}
 	catch(IOException e){}
 	try{
-	    setActive(ImageIO.read(new File("Mage-Exhausted.gif")));
+	    setExhausted(ImageIO.read(new File("Mage-Exhausted.gif")));
+	}
+	catch(IOException e){}
+        try{
+	    setAttacking(ImageIO.read(new File("Mage-Attacking.gif")));
+	}
+	catch(IOException e){}
+	try{
+	    setDefending(ImageIO.read(new File("Mage-Defending.gif")));
 	}
 	catch(IOException e){}
         

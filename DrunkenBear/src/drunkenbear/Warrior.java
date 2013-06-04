@@ -14,7 +14,7 @@ public class Warrior extends Turtle{
 	super(g, p);
         setFriendly(true);
 	setMove(3);
-	setRange(1);
+	setRange(0);
 	setHealth(100);
 	setShield(5);
 	setDamage(20);
@@ -33,7 +33,15 @@ public class Warrior extends Turtle{
 	}
 	catch(IOException e){}
         try{
-	    setActive(ImageIO.read(new File("Warrior-Exhausted.gif")));
+	    setExhausted(ImageIO.read(new File("Warrior-Exhausted.gif")));
+	}
+	catch(IOException e){}
+        try{
+	    setAttacking(ImageIO.read(new File("Warrior-Attacking.gif")));
+	}
+	catch(IOException e){}
+        try{
+	    setDefending(ImageIO.read(new File("Warrior-Defending.gif")));
 	}
 	catch(IOException e){}
         setImage(getStates().get(0));

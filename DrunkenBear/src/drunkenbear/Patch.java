@@ -16,11 +16,13 @@ public class Patch{
     private ArrayList<Object> _vars; //potential to create unlimited instance variables
     private Color _pcolor;
     private boolean active;
+    private boolean attacking;
     private Turtle _turtle;
     private Grid _grid;
     private String _plabel;
     private BufferedImage _default;
     private BufferedImage _active;
+    private BufferedImage _attacking;
     public Patch(Grid grid, int xcor, int ycor){
 	_grid = grid;
 	_xcor = xcor;
@@ -31,12 +33,15 @@ public class Patch{
         try{
 	    _default = ImageIO.read(new File("Tile.gif"));
             _active = ImageIO.read(new File("ActiveTile.gif"));
+            _attacking = ImageIO.read(new File("AttackTile.gif"));
 	}catch (Exception e){}
         
     }
     public BufferedImage getImage(){
         if (active)
             return _active;
+        else if (attacking)
+            return _attacking;
         else
             return _default;
     }
@@ -66,7 +71,12 @@ public class Patch{
     public void deactivate(){
 	active = false;
     }
-
+    public boolean getAttacking(){
+        return attacking;
+    }
+    public void setAttacking(boolean input){
+        attacking = input;
+    }
     public Grid getGrid(){
 	return _grid;
     }
@@ -131,7 +141,7 @@ public class Patch{
 	}
 	return neighbors;
     }
-    public ArrayList<Patch> getNeighbors4(boolean friendly){
+    public ArrayList<Patch> getValidNeighbors4(boolean friendly){
         ArrayList<Patch> neighbors = new ArrayList();
         if (!topEdge()){
             if (getN().getTurtle()==null)
@@ -165,6 +175,22 @@ public class Patch{
                 if (getE().getTurtle().getFriendly()==friendly)
                     neighbors.add(getE());
             }
+	}
+	return neighbors;
+    }
+    public ArrayList<Patch> getNeighbors4(){
+        ArrayList<Patch> neighbors = new ArrayList();
+        if (!topEdge()){
+                neighbors.add(getN());
+	}
+	if (!bottomEdge()){
+                neighbors.add(getS());
+	}
+	if (!leftEdge()){
+                neighbors.add(getW());
+	}
+	if (!rightEdge()){
+                neighbors.add(getE());
 	}
 	return neighbors;
     }

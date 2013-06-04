@@ -9,6 +9,7 @@ public class DisplayTurtle extends JLabel {
     
   public DisplayTurtle(Turtle turtle) {
     this(new ImageIcon(turtle.getImage()));
+
   }
   public DisplayTurtle(ImageIcon icon) {
     setIcon(icon);
@@ -18,6 +19,7 @@ public class DisplayTurtle extends JLabel {
     setBorder(null);
     setText(null);
     setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
+
   }
 
 }

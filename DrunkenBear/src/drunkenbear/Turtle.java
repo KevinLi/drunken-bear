@@ -16,12 +16,47 @@ public abstract class Turtle{
     private int _level;
     private boolean exhausted;
     private BufferedImage _exhaustSprite;
+    private boolean moved;
+    private BufferedImage _attacking;
+    private BufferedImage _defending;
+    private boolean attacking;
+    private boolean defending;
+    public boolean getAttacking(){
+        return attacking;
+    }
+    public boolean getDefending(){
+        return defending;
+    }
+    public void setAttacking(boolean input){
+        attacking = input;
+        if (attacking) _sprite = _attacking;
+    }
+    public void setDefending(boolean input){
+        defending = input;
+        if (defending) _sprite = _defending;
+    }
+    public void setAttacking(BufferedImage input){
+        _attacking = input;
+    }
+    public void setDefending(BufferedImage input){
+        _defending = input;
+    }
     public void setExhausted(boolean input){
         exhausted = input;
+        moved = input;
         if (exhausted) _sprite = _exhaustSprite;
     }
     public void setExhausted(BufferedImage input){
         _exhaustSprite = input;
+    }
+    public boolean getExhausted(){
+        return exhausted;
+    }
+    public boolean getMoved(){
+        return moved;
+    }
+    public void setMoved(boolean input){
+        moved = input;
     }
     public int getLevel(){
         return _level;
@@ -51,7 +86,7 @@ public abstract class Turtle{
         _friendly = input;
     }
     public void act(){
-	if (!active && !exhausted){
+	if (!active){
 	    setImage(_states.get(_state));
 	    _state++;
 	    if (_state >= _states.size()){
@@ -78,11 +113,16 @@ public abstract class Turtle{
 	active = false;
 	_level = 1;
         _xp = 0;
+        moved = false;
     }
     public BufferedImage getImage(){
         if (!active){
+            if (attacking) System.out.println();
             return _sprite;
-        }else return _active;
+        } 
+        else if (attacking) return _attacking;
+        else if (defending) return _defending;
+        else return _active;
     }
     public void setImage(BufferedImage img){
 	_sprite = img;
@@ -127,10 +167,28 @@ public abstract class Turtle{
     public ArrayList<Patch> getPatchesInRadius(int r){
         ArrayList <Patch> ans = new ArrayList();
         ArrayList <Patch> temp = new ArrayList();
-        ans.addAll(getPatch().getNeighbors4(_friendly));
+        ans.addAll(getPatch().getValidNeighbors4(_friendly));
         while (r > 0){
             for (int i = 0; i<ans.size();i++){
-                temp.addAll(ans.get(i).getNeighbors4(_friendly));
+                temp.addAll(ans.get(i).getValidNeighbors4(_friendly));
+            }
+            HashSet hs = new HashSet();
+            hs.addAll(temp);
+            hs.addAll(ans);
+            ans.clear();
+            temp.clear();
+            ans.addAll(hs);
+            r--;
+        }
+        return ans;
+    }
+    public ArrayList<Patch> getPatchesInRange(int r){
+        ArrayList <Patch> ans = new ArrayList();
+        ArrayList <Patch> temp = new ArrayList();
+        ans.addAll(getPatch().getNeighbors4());
+        while (r > 0){
+            for (int i = 0; i<ans.size();i++){
+                temp.addAll(ans.get(i).getNeighbors4());
             }
             HashSet hs = new HashSet();
             hs.addAll(temp);
@@ -142,7 +200,6 @@ public abstract class Turtle{
             System.out.println(r);
         }
         return ans;
-        
     }
     //movement range
     private int _movement;
