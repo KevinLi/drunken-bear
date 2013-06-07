@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.awt.image.*;
 import javax.imageio.*;
 import java.io.*;
-public class Slime extends Turtle{
-    public Slime(Grid g, Patch p){
+public class Wolf extends Turtle{
+    public Wolf(Grid g, Patch p){
 	super(g, p);
         setFriendly(false);
-        setMove(1);
+        setMove(2);
 	setRange(0);
-	setHealth(50);
+	setHealth(65);
 	setShield(0);
-	setDamage(15);
-	setMaxHealth(50);
-        setHoming(false);
+	setDamage(18);
+	setMaxHealth(65);
+        setHoming(true);
         setXP((int)(10+getLevel()*3));
 	try{
 	    getStates().add(ImageIO.read(new File("Slime.gif")));
@@ -43,16 +43,16 @@ public class Slime extends Turtle{
 	}
 	catch(IOException e){}
     }
-    public Slime(Grid g, Patch p, int level){
+    public Wolf(Grid g, Patch p, int level){
         this(g,p);
         setLevel(level);
         setHealth(getHealth()+level*3);
-        setDamage(getDamage()+level);
+        setDamage(getDamage()+(int)(level*1.8));
         setShield(getShield()+level);
         setXP(getXP()+level*3);
     }
     public String toString(){
-            return "Slime";
+            return "Wolf";
     }
 
 }

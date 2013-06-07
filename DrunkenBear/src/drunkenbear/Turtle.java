@@ -21,6 +21,29 @@ public abstract class Turtle{
     private BufferedImage _defending;
     private boolean attacking;
     private boolean defending;
+    private boolean homing;
+    private ArrayList<String> skills;
+    public ArrayList<String> getSkills(){
+        return skills;
+    }
+    public boolean getHoming(){
+        return homing;
+    }
+    public void setHoming(boolean input){
+        homing = input;
+    }
+    public void useSkillOne(Render render){
+    }
+    public void useSkillTwo(Render render){
+    }
+    public void useSkillThree(Render render){
+    }
+    public void learnSkillOne(){
+    }
+    public void learnSkillTwo(){
+    }
+    public void learnSkillThree(){
+    }
     public boolean getAttacking(){
         return attacking;
     }
@@ -61,6 +84,9 @@ public abstract class Turtle{
     public int getLevel(){
         return _level;
     }
+    public void setLevel(int level){
+        _level = level;
+    }
     public int getXP(){
         return _xp;
     }
@@ -74,9 +100,12 @@ public abstract class Turtle{
         while (_xp > 100){
             _level++; //ding!
             _xp-=100;
-            _health+=20;
-            _damage++;
+            _health*=1.3;
+            _damage*=1.3;
             _shield++;
+            if (_level == 2) learnSkillOne();
+            if (_level == 5) learnSkillTwo();
+            if (_level == 10) learnSkillThree();
         }
     }
     public boolean getFriendly(){
@@ -116,6 +145,7 @@ public abstract class Turtle{
         moved = false;
         attacking = false;
         defending = false;
+        skills = new ArrayList();
     }
     public BufferedImage getImage(){
         if (!active){
@@ -160,6 +190,12 @@ public abstract class Turtle{
 	    _patch.setTurtle(this);
 	}
     } 
+    public int getPDistance(Patch target){
+        return Math.abs(getX()-target.getX()) + Math.abs(getY()-target.getX());
+    }
+    public int getPDistance(Turtle target){
+        return Math.abs(getX()-target.getX()) + Math.abs(getY()-target.getX());
+    }
     public double distance(Patch target){
 	return Math.sqrt(Math.pow(getPatch().getX() - target.getX(),2) + 
 			 Math.pow(getPatch().getY() - target.getY(),2));

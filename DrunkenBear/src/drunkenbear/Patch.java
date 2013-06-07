@@ -249,6 +249,12 @@ public class Patch{
         else
             return "O";
     }
+    public int getPDistance(Patch target){
+        return Math.abs(getX()-target.getX()) + Math.abs(getY()-target.getX());
+    }
+    public int getPDistance(Turtle target){
+        return Math.abs(getX()-target.getX()) + Math.abs(getY()-target.getX());
+    }
     public double distance(Patch target){
 	return Math.sqrt(Math.pow(getX() - target.getX(),2) + 
 			 Math.pow(getY() - target.getY(),2));

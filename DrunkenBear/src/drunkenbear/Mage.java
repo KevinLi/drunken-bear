@@ -42,6 +42,36 @@ public class Mage extends Turtle{
 	catch(IOException e){}
         
     }
+    public void learnSkillOne(){
+        getSkills().add("Icicle Riser");
+    }
+    public void learnSkillTwo(){
+        getSkills().add("Blood Lightning");
+    }
+    public void learnSkillThree(){
+        getSkills().add("Protometeor");
+    }
+    public void useSkillOne(Render render){
+        
+    }
+    public void useSkillTwo(Render render){
+    }
+    public void useSkillThree(Render render){
+        render.getCSDisplay();
+        int totalXP=0;
+        for (int i = 0; i<16;i++){
+            for (int j = 0; j<16;j++){
+                Turtle currentTurtle = render.getGrid().getPatch(i,j).getTurtle();
+                if (currentTurtle != null && currentTurtle.getFriendly()==false){
+                    currentTurtle.takeDamage((int)(getDamage()*1.5));
+                    if (currentTurtle.getHealth()<=0){
+                        totalXP+=currentTurtle.getXP();
+                    }
+                }
+            }
+        }
+        if (totalXP > 0){}
+    }
     public String toString(){
             return "Mage";
     }
