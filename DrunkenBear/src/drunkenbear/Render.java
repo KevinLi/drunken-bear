@@ -116,9 +116,16 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public JPanel getCSDisplay() {
         return _cutsceneDisplay;
     }
+    
+    public CutSceneManager getCSManager(){
+        return cutscenes;
+    }
 
     public void setCutScene(boolean foo) {
         cutscene = foo;
+    }
+    public boolean getCutScene(){
+        return cutscene;
     }
     //sleep: 1000ms
     //nap: 50ms
@@ -166,6 +173,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         spawnTurtle(8, 8, "Mage");
         friendlyTurtles.add(_grid.getPatch(8, 8).getTurtle());
         spawnTurtle(7, 8, "Slime");
+        //cutscenes.mageSkill3();
         //cutscenes.startCutSceneOne();
         _display.repaint();
         drawPatches();
@@ -222,7 +230,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public Render(int width, int height) {
         this(width, height, new Grid(width / 32, height / 32));
     }
-
+    public Frame getFrame(){
+        return _frame;
+    }
     private void setFrame() {
         JMenuBar menuBar = new JMenuBar();
         pauseButton = new JButton("Pause");
@@ -320,23 +330,24 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                         boolean foo = false;
                         for (int k = 0; k < activePatches.size(); k++) {
                             if (activePatches.get(k).getTurtle() == null) {
-                                System.out.println("foo");
                                 targets = activePatches.get(k).getTurtles4(true);
                                 if (targets.size() > 0) {
                                     currentEnemy.moveTo(activePatches.get(k));
                                     currentEnemy.setAttacking(true);
                                     //targets.get(0).setDefending(true);
                                     tick();
+                                    int damageDone = currentEnemy.getDamage()-targets.get(0).getShield();
+                                    if (damageDone <= 0) damageDone = 1;
                                     Object[] options = {"Okay."};
                                     int n = JOptionPane.showOptionDialog(_frame,
-                                            "" + currentEnemy.getClass().toString().substring(18) + " deals " + (currentEnemy.getDamage() - targets.get(0).getShield()) + " damage to " + targets.get(0).getClass().toString().substring(18),
+                                            "" + currentEnemy.getClass().toString().substring(18) + " deals " + damageDone + " damage to " + targets.get(0).getClass().toString().substring(18),
                                             "Combat Reporter",
                                             JOptionPane.YES_NO_CANCEL_OPTION,
                                             JOptionPane.QUESTION_MESSAGE,
                                             null,
                                             options,
                                             options[0]);
-                                    targets.get(0).takeDamage(currentEnemy.getDamage());
+                                    targets.get(0).takeDamage(damageDone);
                                     if (targets.get(0).getHealth() <= 0) {
                                         int m = JOptionPane.showOptionDialog(_frame,
                                                 "" + targets.get(0).getClass().toString().substring(18) + " has died!",
@@ -377,7 +388,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                                 boolean done = false;
                                 int giveUp = 20;
                                 while (!done && giveUp > 0) {
-                                    int n = (int) Math.random() * activePatches.size();
+                                    int n = (int) (Math.random() * activePatches.size());
                                     if (activePatches.get(n).getTurtle() == null) {
                                         done = true;
                                         currentEnemy.moveTo(activePatches.get(n));
@@ -397,11 +408,19 @@ public class Render extends Canvas implements ActionListener, MouseListener {
 
     public void spawnEnemies(int n) {
         Patch spawnPoint;
+        int m = (int) (n*.2);
         int failsafe = 42;
         while (n > 0 && failsafe > 0) {
             spawnPoint = enemySpawnPoints.get((int) (Math.random() * enemySpawnPoints.size()));
             if (spawnTurtle(spawnPoint.getX(), spawnPoint.getY(), "Slime")) {
                 n--;
+            }
+            failsafe--;
+        }
+        while (m > 0 && failsafe > 0) {
+            spawnPoint = enemySpawnPoints.get((int) (Math.random() * enemySpawnPoints.size()));
+            if (spawnTurtle(spawnPoint.getX(), spawnPoint.getY(), "Wolf")) {
+                m--;
             }
             failsafe--;
         }
@@ -477,7 +496,15 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void setGrid(Grid g) {
         _grid = g;
     }
-
+    public Grid getGrid(){
+        return _grid;
+    }
+    public ArrayList<Patch> getActivePatches(){
+        return activePatches;
+    }
+    public void setActivePatches(ArrayList<Patch> input){
+        activePatches = input;
+    }
     public void mousePressed(MouseEvent e) {
     }
 
@@ -593,10 +620,16 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                             attacking = false;
                         }else if(m==0){
                             activeTurtle.useSkillOne(this);
+                            moving = false;
+                            attacking = false;
                         }else if (m==1){
                             activeTurtle.useSkillTwo(this);
+                            moving = false;
+                            attacking = false;
                         }else{
                             activeTurtle.useSkillThree(this);
+                            moving = false;
+                            attacking = false;
                         }
                     }
                 }
@@ -604,7 +637,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             }
         } else if (e.getComponent() instanceof DisplayImage && moving && !attacking) {
             Patch foo = _grid.getPatch(e.getComponent().getX() / scale, e.getComponent().getY() / scale);
-            System.out.println(foo.getX() + ", " + foo.getY());
             activeTurtle.moveTo(foo);
             activeTurtle.setMoved(true);
             activeTurtle.activate(false);
@@ -696,6 +728,5 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             tick();
             drawPatches();
         }
-
     }
 }

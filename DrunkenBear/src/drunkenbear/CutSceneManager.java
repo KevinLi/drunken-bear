@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package drunkenbear;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -13,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 public class CutSceneManager implements MouseListener {
@@ -20,6 +17,7 @@ public class CutSceneManager implements MouseListener {
     private ArrayList<CutScene> cutscene2;
     private ArrayList<CutScene> currentCutscene;
     private ArrayList<CutScene> pauseScreen;
+    private ArrayList<CutScene> mage3;
     private BufferedImage portrait;
     private String dialogue;
     private Render _render;
@@ -29,12 +27,14 @@ public class CutSceneManager implements MouseListener {
         cutscene1 = new ArrayList();
         cutscene2 = new ArrayList();
         pauseScreen = new ArrayList();
+        mage3 = new ArrayList();
         try{
             portrait = (ImageIO.read(new File("Pause Screen.gif")));
         }catch (Exception e) {}
         pauseScreen.add(new CutScene(portrait, null));
         createCutSceneOne();
         createCutSceneTwo();
+        createMageSkills();
         
     }
     public void createCutSceneOne(){
@@ -76,6 +76,20 @@ public class CutSceneManager implements MouseListener {
 	}catch (Exception e){System.out.println("Boo!");}
         dialogue=("Ah, did I? Well, my bad.");
         cutscene2.add(new CutScene(portrait,dialogue));
+    }
+    public void createMageSkills(){
+        ImageIcon skill = null;
+        try{
+            skill=new ImageIcon("MageUltimate.gif");
+        }catch (Exception e){}
+        mage3.add(new CutScene(skill));
+    }
+    public void mageSkill3(){
+        _render.setCutScene(true);
+        _render.getCSDisplay().add(mage3.get(0));
+        mage3.get(0).addMouseListener(this);
+        currentCutscene = mage3;
+        pos = 0;
     }
     public void startCutSceneOne(){
         _render.setCutScene(true);
@@ -132,8 +146,4 @@ public class CutSceneManager implements MouseListener {
         pos++;
         nextScene();
     }
-
-            
-        
 }
-

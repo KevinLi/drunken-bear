@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package drunkenbear;
 import java.awt.Font;
 import java.awt.image.*;
@@ -14,6 +10,9 @@ import java.io.*;
 public class CutScene extends JLabel{
     private ImageIcon _sprite;
     private JTextArea _dialogue;
+    public CutScene(ImageIcon skill){
+        setIcon(skill);
+    }
     public CutScene(BufferedImage sprite, String dialogue){
         _sprite = new ImageIcon(sprite); 
     // setMargin(new Insets(0,0,0,0));
