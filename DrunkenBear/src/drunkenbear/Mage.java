@@ -96,9 +96,18 @@ public class Mage extends Turtle {
         activate(false);
         setExhausted(true);
         render.tick();
-        render.drawPatches();
         render.getCSManager().mageSkill3();
-
+        render.drawPatches();
+        //render.getCSManager().startCutSceneOne();
+        render.getCSDisplay().repaint();
+        double startTime = System.currentTimeMillis();
+        render.repaint();
+        render.tick();
+        //while (startTime + 2000 > System.currentTimeMillis()){}
+        //render.getCSDisplay().remove(render.getCSManager().getMage());
+        render.repaint();
+        render.tick();
+        
     }
 
     public String toString() {

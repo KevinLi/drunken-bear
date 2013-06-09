@@ -12,6 +12,8 @@ public class CutScene extends JLabel{
     private JTextArea _dialogue;
     public CutScene(ImageIcon skill){
         setIcon(skill);
+        setVisible(true);
+        setOpaque(true);
     }
     public CutScene(BufferedImage sprite, String dialogue){
         _sprite = new ImageIcon(sprite); 

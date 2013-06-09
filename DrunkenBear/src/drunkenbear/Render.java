@@ -166,7 +166,10 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         }
         _lastTick = System.currentTimeMillis();
     }
-
+    public void wait(double seconds){
+        double startTime = System.currentTimeMillis();
+        while(startTime + 1000*seconds > System.currentTimeMillis()){}
+    }
     public void setup() {
         spawnTurtle(7, 7, "Warrior");
         friendlyTurtles.add(_grid.getPatch(7, 7).getTurtle());

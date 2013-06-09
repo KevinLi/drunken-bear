@@ -87,7 +87,10 @@ public class CutSceneManager implements MouseListener {
     public void mageSkill3(){
         _render.setCutScene(true);
         _render.getCSDisplay().add(mage3.get(0));
+        System.out.println("A");
         mage3.get(0).addMouseListener(this);
+        startCutSceneOne();
+        System.out.println("B");
         currentCutscene = mage3;
         pos = 0;
     }
@@ -126,8 +129,12 @@ public class CutSceneManager implements MouseListener {
         }
         _render.getCSDisplay().repaint();
     }
+    public CutScene getMage(){
+        return mage3.get(0);
+    }
     public void mousePressed(MouseEvent e){
-        _render.getCSDisplay().remove(currentCutscene.get(pos));
+        //_render.getCSDisplay().remove(currentCutscene.get(pos));
+        _render.getCSDisplay().removeAll();
         pos++;
         nextScene();
     }
