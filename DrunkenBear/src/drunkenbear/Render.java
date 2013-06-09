@@ -76,7 +76,8 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         images = new ArrayList();
         activePatches = new ArrayList();
         cutscenes = new CutSceneManager(this);
-        dayTracker = new JLabel();
+        day = 1;
+        dayTracker = new JLabel("Day: " + Integer.toString(day));
         resourceTracker = new JLabel();
         spawnAlly = new JComboBox();
         friendlyTurtles = new ArrayList();
@@ -91,7 +92,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             enemySpawnPoints.add(_grid.getPatch(width / scale - 1, i));
             enemySpawnPoints.add(_grid.getPatch(i, width / scale - 1));
         }
-        day = 1;
         setMessages();
         patches = new Component[width / scale][height / scale];
         try {
@@ -257,6 +257,10 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         endTurn.setPreferredSize(new Dimension(90, 0));
         menuBar.add(endTurn);
         endTurn.addActionListener(this);
+        
+        dayTracker.setFont(new Font("Arial", 0, 12));
+        dayTracker.setPreferredSize(new Dimension(100,0));
+        menuBar.add(dayTracker);
 
         menuBar.setPreferredSize(new Dimension(width * scale, 40));
         setPreferredSize(new Dimension(width * scale, height * scale));
@@ -482,8 +486,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
                     }
                 }
             }
-            startEnemyPhase();
             day++;
+            dayTracker.setText("Day: " + Integer.toString(day));
+            startEnemyPhase();
         }
     }
 
