@@ -328,86 +328,84 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         for (int i = 0; i < width / scale; i++) {
             for (int j = 0; j < height / scale; j++) {
                 if (_grid.getPatch(i, j).getTurtle() == null) {
-                } else {
-                    if (_grid.getPatch(i, j).getTurtle().getFriendly() == false && _grid.getPatch(i, j).getTurtle().getExhausted() == false) {
-                        Turtle currentEnemy = _grid.getPatch(i, j).getTurtle();
-                        activePatches = currentEnemy.getPatchesInRange(currentEnemy.getMove());
-                        ArrayList<Turtle> targets;
-                        currentEnemy.activate(true);
-                        boolean foo = false;
-                        for (int k = 0; k < activePatches.size(); k++) {
-                            if (activePatches.get(k).getTurtle() == null) {
-                                targets = activePatches.get(k).getTurtles4(true);
-                                if (targets.size() > 0) {
-                                    currentEnemy.moveTo(activePatches.get(k));
-                                    currentEnemy.setAttacking(true);
-                                    //targets.get(0).setDefending(true);
-                                    tick();
-                                    int damageDone = currentEnemy.getDamage()-targets.get(0).getShield();
-                                    if (damageDone <= 0) damageDone = 1;
-                                    Object[] options = {"Okay."};
-                                    int n = JOptionPane.showOptionDialog(_frame,
-                                            "" + currentEnemy.getClass().toString().substring(18) + " deals " + damageDone + " damage to " + targets.get(0).getClass().toString().substring(18),
+                } else if (_grid.getPatch(i, j).getTurtle().getFriendly() == false && _grid.getPatch(i, j).getTurtle().getExhausted() == false) {
+                    Turtle currentEnemy = _grid.getPatch(i, j).getTurtle();
+                    activePatches = currentEnemy.getPatchesInRange(currentEnemy.getMove());
+                    ArrayList<Turtle> targets;
+                    currentEnemy.activate(true);
+                    boolean foo = false;
+                    for (int k = 0; k < activePatches.size(); k++) {
+                        if (activePatches.get(k).getTurtle() == null) {
+                            targets = activePatches.get(k).getTurtles4(true);
+                            if (targets.size() > 0) {
+                                currentEnemy.moveTo(activePatches.get(k));
+                                currentEnemy.setAttacking(true);
+                                //targets.get(0).setDefending(true);
+                                tick();
+                                int damageDone = currentEnemy.getDamage()-targets.get(0).getShield();
+                                if (damageDone <= 0) damageDone = 1;
+                                Object[] options = {"Okay."};
+                                int n = JOptionPane.showOptionDialog(_frame,
+                                        "" + currentEnemy.getClass().toString().substring(18) + " deals " + damageDone + " damage to " + targets.get(0).getClass().toString().substring(18),
+                                        "Combat Reporter",
+                                        JOptionPane.YES_NO_CANCEL_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,
+                                        options,
+                                        options[0]);
+                                targets.get(0).takeDamage(damageDone);
+                                if (targets.get(0).getHealth() <= 0) {
+                                    int m = JOptionPane.showOptionDialog(_frame,
+                                            "" + targets.get(0).getClass().toString().substring(18) + " has died!",
                                             "Combat Reporter",
                                             JOptionPane.YES_NO_CANCEL_OPTION,
                                             JOptionPane.QUESTION_MESSAGE,
                                             null,
                                             options,
                                             options[0]);
-                                    targets.get(0).takeDamage(damageDone);
-                                    if (targets.get(0).getHealth() <= 0) {
-                                        int m = JOptionPane.showOptionDialog(_frame,
-                                                "" + targets.get(0).getClass().toString().substring(18) + " has died!",
-                                                "Combat Reporter",
-                                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
-                                    }
-                                    //currentEnemy.setExhausted(true);
-                                    currentEnemy.setAttacking(false);
-                                    foo = true;
-                                    break;
                                 }
+                                //currentEnemy.setExhausted(true);
+                                currentEnemy.setAttacking(false);
+                                foo = true;
+                                break;
                             }
                         }
-                        if (!foo) {
-                            if (currentEnemy.getHoming() == true) {
-                                Turtle nearestAlly = null;
-                                double recordHolder = 100;
-                                for (int m = 0; m < friendlyTurtles.size(); m++) {
-                                    if (currentEnemy.getPDistance(friendlyTurtles.get(m)) < recordHolder) {
-                                        nearestAlly = friendlyTurtles.get(m);
-                                        recordHolder = currentEnemy.getPDistance(friendlyTurtles.get(m));
-                                    }
-                                }
-                                recordHolder = 100;
-                                Patch closest = currentEnemy.getPatch();
-                                for (int k = 0; k < activePatches.size(); k++) {
-                                    if (activePatches.get(k).getPDistance(nearestAlly) < recordHolder && activePatches.get(k).getTurtle() == null) {
-                                        closest = activePatches.get(k);
-                                        recordHolder = activePatches.get(k).getPDistance(nearestAlly);
-                                    }
-                                }
-                                currentEnemy.moveTo(closest);
-                            } else {
-                                boolean done = false;
-                                int giveUp = 20;
-                                while (!done && giveUp > 0) {
-                                    int n = (int) (Math.random() * activePatches.size());
-                                    if (activePatches.get(n).getTurtle() == null) {
-                                        done = true;
-                                        currentEnemy.moveTo(activePatches.get(n));
-                                        giveUp--;
-                                    }
-                                }
-                            }
-                        }
-                        currentEnemy.setExhausted(true);
-                        drawPatches();
-                        currentEnemy.activate(false);
                     }
+                    if (!foo) {
+                        if (currentEnemy.getHoming() == true) {
+                            Turtle nearestAlly = null;
+                            double recordHolder = 100;
+                            for (int m = 0; m < friendlyTurtles.size(); m++) {
+                                if (currentEnemy.getPDistance(friendlyTurtles.get(m)) < recordHolder) {
+                                    nearestAlly = friendlyTurtles.get(m);
+                                    recordHolder = currentEnemy.getPDistance(friendlyTurtles.get(m));
+                                }
+                            }
+                            recordHolder = 100;
+                            Patch closest = currentEnemy.getPatch();
+                            for (int k = 0; k < activePatches.size(); k++) {
+                                if (activePatches.get(k).getPDistance(nearestAlly) < recordHolder && activePatches.get(k).getTurtle() == null) {
+                                    closest = activePatches.get(k);
+                                    recordHolder = activePatches.get(k).getPDistance(nearestAlly);
+                                }
+                            }
+                            currentEnemy.moveTo(closest);
+                        } else {
+                            boolean done = false;
+                            int giveUp = 20;
+                            while (!done && giveUp > 0) {
+                                int n = (int) (Math.random() * activePatches.size());
+                                if (activePatches.get(n).getTurtle() == null) {
+                                    done = true;
+                                    currentEnemy.moveTo(activePatches.get(n));
+                                    giveUp--;
+                                }
+                            }
+                        }
+                    }
+                    currentEnemy.setExhausted(true);
+                    drawPatches();
+                    currentEnemy.activate(false);
                 }
             }
         }
