@@ -50,6 +50,11 @@ public class Warrior extends Turtle {
 					"res/Warrior/Warrior-Attacking.gif")));
 		} catch (IOException e) {
 		}
+                try {
+			setInfoPic(ImageIO.read(new File(
+					"res/Warrior/WarriorInfo.gif")));
+		} catch (IOException e) {
+		}
 		setImage(getStates().get(0));
 
 	}

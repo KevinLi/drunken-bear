@@ -23,6 +23,13 @@ public abstract class Turtle{
     private boolean defending;
     private boolean homing;
     private ArrayList<String> skills;
+    private BufferedImage infoPic;
+    public BufferedImage getInfoPic(){
+        return infoPic;
+    }
+    public void setInfoPic(BufferedImage input){
+        infoPic = input;
+    }
     public ArrayList<String> getSkills(){
         return skills;
     }
