@@ -5,13 +5,15 @@
 package drunkenbear;
 
 import java.awt.Color;
-
-/**
- *
- * @author Jeffrey
- */
 public class Grid{
     private Patch[][] _grid;
+    private Render _render;
+    public void setRender(Render input){
+        _render = input;
+    }
+    public Render getRender(){
+        return _render;
+    }
     public Grid(){
 	_grid = new Patch[1][1];
 	_grid[0][0] = new Patch(this, 0, 0);

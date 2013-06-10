@@ -74,6 +74,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         locked = new AtomicBoolean();
         locked.set(false);
         _grid = g;
+        _grid.setRender(this);
         images = new ArrayList();
         activePatches = new ArrayList();
         cutscenes = new CutSceneManager(this);
@@ -100,7 +101,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         } catch (IOException e) {
         }
     }
-
+    public ArrayList<Component> getImages(){
+        return images;
+    }
     public void setMessages() {
         messages.add("Lead me to victory");
         messages.add("What shall I do next?");
@@ -189,7 +192,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
         spawnTurtle(8, 8, "Mage");
         friendlyTurtles.add(_grid.getPatch(8, 8).getTurtle());
         spawnTurtle(7, 8, "Slime");
-        cutscenes.startCutSceneOne();
+        //cutscenes.startCutSceneOne();
         _display.repaint();
         drawPatches();
     }
@@ -483,7 +486,9 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     public void drawTurtle(Turtle turtle) {
         images.add(_display.add(new DisplayTurtle(turtle)));
         images.get(images.size() - 1).setLocation(turtle.getX() * scale, turtle.getY() * scale);
-        images.get(images.size() - 1).addMouseListener(this);
+        if (!special){
+            images.get(images.size() - 1).addMouseListener(this);
+        }
     }
 
     public JButton getPauseButton() {
@@ -556,6 +561,7 @@ public class Render extends Canvas implements ActionListener, MouseListener {
     }
 
     public void mouseClicked(MouseEvent e) {
+        if (!special){
         if (e.getComponent() instanceof DisplayTurtle && !moving && !attacking) {
             if (_grid.getPatch(e.getComponent().getX() / scale, e.getComponent().getY() / scale).getTurtle().getExhausted() == false
                     && _grid.getPatch(e.getComponent().getX() / scale, e.getComponent().getY() / scale).getTurtle().getFriendly() == true) {
@@ -770,5 +776,6 @@ public class Render extends Canvas implements ActionListener, MouseListener {
             tick();
             drawPatches();
         }
+    }
     }
 }

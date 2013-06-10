@@ -20,8 +20,11 @@ public class CutSceneManager implements MouseListener {
     private ArrayList<CutScene> cutscene2;
     private ArrayList<CutScene> currentCutscene;
     private ArrayList<CutScene> pauseScreen;
+    private ArrayList<CutScene> mage1;
+    private ArrayList<CutScene> mage2;
     private ArrayList<CutScene> mage3;
     private ArrayList<CutScene> info;
+    private ArrayList<CutScene> placeHolder;
     private BufferedImage portrait;
     private String dialogue;
     private Render _render;
@@ -33,7 +36,7 @@ public class CutSceneManager implements MouseListener {
         cutscene2 = new ArrayList();
         pauseScreen = new ArrayList();
         info = new ArrayList();
-        mage3 = new ArrayList();
+        
         try {
             portrait = (ImageIO.read(new File("Pause Screen.gif")));
         } catch (Exception e) {
@@ -44,7 +47,14 @@ public class CutSceneManager implements MouseListener {
         createMageSkills();
 
     }
-
+    public void createPlaceHolder(){
+        placeHolder = new ArrayList();
+        try {
+            portrait = (ImageIO.read(new File("Background.gif")));
+        } catch (Exception e) {
+        }
+        placeHolder.add(new CutScene(portrait, null));
+    }
     public void createCutSceneOne() {
         try {
             portrait = (ImageIO.read(new File(
@@ -119,6 +129,30 @@ public class CutSceneManager implements MouseListener {
     }
 
     public void createMageSkills() {
+        createMageSkill1();
+        createMageSkill2();
+        createMageSkill3();
+    }
+    public void createMageSkill1(){
+        mage1 = new ArrayList();
+        ImageIcon skill = null;
+        try {
+            skill = new ImageIcon("MageSkill1.gif");
+        } catch (Exception e) {
+        }
+        mage1.add(new CutScene(skill));
+    }
+    public void createMageSkill2(){
+        mage2 = new ArrayList();
+        ImageIcon skill = null;
+        try {
+            skill = new ImageIcon("MageSkill2.gif");
+        } catch (Exception e) {
+        }
+        mage2.add(new CutScene(skill));
+    }
+    public void createMageSkill3(){
+        mage3 = new ArrayList();
         ImageIcon skill = null;
         try {
             skill = new ImageIcon("MageUltimate.gif");
@@ -126,12 +160,30 @@ public class CutSceneManager implements MouseListener {
         }
         mage3.add(new CutScene(skill));
     }
-
+    public void mageSkill1() {
+        createPlaceHolder();
+        _render.setCutScene(true);
+        _render.getCSDisplay().add(mage1.get(0));
+        mage1.get(0).addMouseListener(this);
+        startPlaceHolder();
+        currentCutscene = mage1;
+        pos = 0;
+    }
+    public void mageSkill2() {
+        createPlaceHolder();
+        _render.setCutScene(true);
+        _render.getCSDisplay().add(mage2.get(0));
+        mage2.get(0).addMouseListener(this);
+        startPlaceHolder();
+        currentCutscene = mage2;
+        pos = 0;
+    }
     public void mageSkill3() {
+        createPlaceHolder();
         _render.setCutScene(true);
         _render.getCSDisplay().add(mage3.get(0));
         mage3.get(0).addMouseListener(this);
-        startCutSceneOne();
+        startPlaceHolder();
         currentCutscene = mage3;
         pos = 0;
     }
@@ -143,7 +195,13 @@ public class CutSceneManager implements MouseListener {
         currentCutscene = cutscene1;
         pos = 0;
     }
-
+    public void startPlaceHolder() {
+        _render.setCutScene(true);
+        _render.getCSDisplay().add(placeHolder.get(0));
+        placeHolder.get(0).addMouseListener(this);
+        currentCutscene = placeHolder;
+        pos = 0;
+    }
     public void pauseScreen() {
         _render.setCutScene(true);
         _render.getCSDisplay().add(pauseScreen.get(0));
